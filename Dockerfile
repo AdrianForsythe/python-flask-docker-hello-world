@@ -15,6 +15,6 @@ COPY ./assets/ /code/assets
 WORKDIR /code/
 ENV PYTHONPATH /code
 
-ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:8000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
+ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:5000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
 
 CMD ["gunicorn", "app:server"]
