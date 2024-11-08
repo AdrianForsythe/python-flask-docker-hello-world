@@ -1,20 +1,13 @@
 FROM python:3.9
-MAINTAINER Adrian Forsythe "adrian.e.forsythe@gmail.com"
+LABEL org.opencontainers.image.authors="adrian.e.forsythe@gmail.com"
 
 COPY ./requirements.txt /requirements.txt
+COPY . /app
+WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install -r /requirements.txt
-RUN pip3 install gunicorn openpyxl
 
-COPY ./app.py /code/
-RUN mkdir /code/assets
-COPY ./assets/ /code/assets
-
-WORKDIR /code/
-ENV PYTHONPATH /code
-
-ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:5000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
-
-CMD ["gunicorn", "app:server"]
+ENTRYPOINT ["python"]
+CMD ["app.py"]
